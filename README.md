@@ -1,6 +1,8 @@
+# Bonfire.Data.Projects
+
 <!-- [hex](https://hex.pm/bonfire_data_projects) [hexdocs](https://hexdocs.pm/bonfire_data_projects) -->
 
-# bonfire\_data\_projects
+WIP schemas for projects, repos, etc
 
 ## Copyright and License
 
