@@ -11,20 +11,20 @@ defmodule Bonfire.Data.Projects.Project do
   pointable_schema do
   end
 
-  @cast     []
+  @cast []
+
   # @required []
 
   def changeset(project \\ %Project{}, params) do
-    project
-    |> Changeset.cast(params, @cast)
+    Changeset.cast(project, params, @cast)
+
     # |> Changeset.validate_required(@required)
     # |> Changeset.assoc_constraint(:verb)
     # |> Changeset.unique_constraint([:subject_id, :verb_id, :object_id])
   end
-
 end
-defmodule Bonfire.Data.Projects.Project.Migration do
 
+defmodule Bonfire.Data.Projects.Project.Migration do
   use Ecto.Migration
   import Pointers.Migration
   alias Bonfire.Data.Projects.Project
@@ -36,16 +36,17 @@ defmodule Bonfire.Data.Projects.Project.Migration do
   defp make_project_table(exprs) do
     quote do
       require Pointers.Migration
-      Pointers.Migration.create_pointable_table(Bonfire.Data.Projects.Project) do
+
+      Pointers.Migration.create_pointable_table Bonfire.Data.Projects.Project do
         # Ecto.Migration.add :subject_id,
         #   Pointers.Migration.strong_pointer(), null: false
-        unquote_splicing(exprs)
+        (unquote_splicing(exprs))
       end
     end
   end
 
   defmacro create_project_table(), do: make_project_table([])
-  defmacro create_project_table([do: {_, _, body}]), do: make_project_table(body)
+  defmacro create_project_table(do: {_, _, body}), do: make_project_table(body)
 
   # drop_project_table/0
 
@@ -61,22 +62,22 @@ defmodule Bonfire.Data.Projects.Project.Migration do
   #   end
   # end
 
-
   # defmacro create_project_subject_index(opts \\ [])
   # defmacro create_project_subject_index(opts), do: make_project_subject_index(opts)
 
   # def drop_project_subject_index(opts \\ []) do
   #   drop_if_exists(index(@project_table, [:subject_id], opts))
   # end
-
   # migrate_project/{0,1}
 
   defp mg(:up) do
     quote do
       unquote(make_project_table([]))
+
       # unquote(make_project_subject_index([]))
     end
   end
+
   defp mg(:down) do
     quote do
       # Bonfire.Data.Projects.Project.Migration.drop_project_subject_index()
@@ -93,5 +94,4 @@ defmodule Bonfire.Data.Projects.Project.Migration do
   end
 
   defmacro migrate_project(dir), do: mg(dir)
-
 end
